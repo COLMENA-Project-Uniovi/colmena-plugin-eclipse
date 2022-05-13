@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	
+	<extension point="org.eclipse.ui.startup">
+	     <startup class="es.uniovi.pulso.colmena.activator.Activator"/>
+ 	</extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Colmena Plugin"
+            id="es.uniovi.pulso.colmena.commands.category">
+      </category>
+      <command
+            name="Set Colmena User"
+            categoryId="es.uniovi.pulso.colmena.commands.category"
+            id="es.uniovi.pulso.colmena.commands.ChangeUser">
+      </command>
+      
+      <command
+            name="Start Capturing Errors"
+            categoryId="es.uniovi.pulso.colmena.commands.category"
+            id="es.uniovi.pulso.colmena.commands.StartCapturingErrors">
+      </command>
+      <command
+            name="Stop Capturing Errors"
+            categoryId="es.uniovi.pulso.colmena.commands.category"
+            id="es.uniovi.pulso.colmena.commands.StopCapturingErrors">
+      </command>
+      <command
+            categoryId="es.uniovi.pulso.colmena.commands.category"
+            id="es.uniovi.pulso.colmena.commands.ScanCompleteProject"
+            name="Scan complete project">
+      </command>
+      <command
+            categoryId="es.uniovi.pulso.colmena.commands.category"
+            id="es.uniovi.pulso.colmena.commands.Status"
+            name="Status">
+      </command>
+      
+       <!--<command
+            categoryId="es.uniovi.pulso.colmena.commands.category"
+            id="es.uniovi.pulso.colmena.commands.CheckColmenaState"
+            name="Colmena Status">
+      </command>-->
+      
+   </extension>
+  
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="Colmena"
+               mnemonic="C"
+               id="es.uniovi.pulso.colmena.menus.ColmenaMenu">
+            <command
+                  commandId="es.uniovi.pulso.colmena.commands.ChangeUser"
+                  mnemonic="U"
+                  id="es.uniovi.pulso.colmena.menus.ChangeUser"
+                  icon="/icons/change.png">
+                  
+            </command>
+            <command
+                  commandId="es.uniovi.pulso.colmena.commands.StartCapturingErrors"
+                  mnemonic="S"
+                  id="es.uniovi.pulso.colmena.menus.StartCapturingErrors"
+                  icon="/icons/start.png">
+                  
+            </command>
+            <command
+                  commandId="es.uniovi.pulso.colmena.commands.StopCapturingErrors"
+                  mnemonic="P"
+                  id="es.uniovi.pulso.colmena.menus.StopCapturingErrors"
+                  icon="/icons/stop.png">
+                  
+            </command>
+            <separator
+                  name="es.uniovi.pulso.colmena.menus.separator"
+                  visible="true">
+            </separator>
+            <dynamic
+                  class="es.uniovi.pulso.colmena.business.handlers.StatusMenuItem"
+                  id="es.uniovi.pulso.colmena.menus.status">
+            </dynamic>
+         </menu>
+      </menuContribution>
+        
+      <menuContribution
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <separator
+                   name="es.uniovi.pulso.colmena.menus.separator.explorer.begin"
+                   visible="true">
+         </separator>
+         <command
+         	   id="es.uniovi.pulso.colmena.menus.package.colmena"
+         	   commandId="es.uniovi.pulso.colmena.commands.ScanCompleteProject"
+               label="Scan complete project"
+               style="push"
+               icon="/icons/start.png">
+         </command>
+			
+         <separator
+                   name="es.uniovi.pulso.colmena.menus.separator.explorer.end"
+                   visible="true">
+         </separator>
+      </menuContribution>
+     
+    <menuContribution
+            locationURI="toolbar:org.eclipse.ui.trim.status">
+
+
+<!-- toolbar:org.eclipse.ui.main.toolbar - the top-level tool bar 
+toolbar:org.eclipse.ui.trim.command1 - the top left trim 
+toolbar:org.eclipse.ui.trim.command2 - the top right trim 
+toolbar:org.eclipse.ui.trim.vertical1 - the left vertical trim 
+toolbar:org.eclipse.ui.trim.vertical2 - the right vertical trim 
+toolbar:org.eclipse.ui.trim.status - the status line trim -->
+
+
+         <toolbar
+               id="es.uniovi.pulso.colmena.menus.state.ColmenaState">
+            <!--<command
+                  commandId="es.uniovi.pulso.colmena.commands.CheckColmenaState"
+                  icon="/icons/start.png"
+                  id="contributions.colmenaState"
+                  label="%Trim.item"
+                  tooltip="Colmena Status">
+            </command>    -->  
+            <!--<control
+                  class="es.uniovi.pulso.colmena.business.handlers.CheckColmenaStateHandler"
+                  id="contributions.colmenaContro1">
+            </control>-->
+         </toolbar>
+      </menuContribution>-->
+     
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="es.uniovi.pulso.colmena.commands.ChangeUser"
+            class="es.uniovi.pulso.colmena.business.handlers.ChangeUserHandler">
+      </handler>
+       <handler
+            commandId="es.uniovi.pulso.colmena.commands.StartCapturingErrors"
+            class="es.uniovi.pulso.colmena.business.handlers.StartCapturingErrorsHandler">
+      </handler>
+       <handler
+            commandId="es.uniovi.pulso.colmena.commands.StopCapturingErrors"
+            class="es.uniovi.pulso.colmena.business.handlers.StopCapturingErrorsHandler">
+      </handler>
+      <handler 
+      		commandId="es.uniovi.pulso.colmena.commands.ScanCompleteProject"
+      		class="es.uniovi.pulso.colmena.business.handlers.ScanCompleteProjectHandler">
+      </handler>
+      <handler
+            class="es.uniovi.pulso.colmena.business.handlers.StatusHandler"
+            commandId="es.uniovi.pulso.colmena.commands.Status">
+      </handler>
+      <!--<handler 
+      		commandId="es.uniovi.pulso.colmena.commands.CheckColmenaState"
+      		class="es.uniovi.pulso.colmena.business.handlers.CheckColmenaStateHandler">
+      </handler>-->
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="es.uniovi.pulso.colmena.presentation.preferences.ColmenaPreferencesPage"
+            id="es.uniovi.pulso.colmena.presentation.preferences.ColmenaPreferencesPage"
+            name="Colmena">
+      </page>
+      <page
+      		category="es.uniovi.pulso.colmena.presentation.preferences.ColmenaPreferencesPage"
+            class="es.uniovi.pulso.colmena.presentation.preferences.ColmenaPersistencePreferencePage"
+            id="es.uniovi.pulso.colmena.presentation.preferences.ColmenaPersistencePreferencePage"
+            name="Persistence">
+      </page>
+      <page
+     		category="es.uniovi.pulso.colmena.presentation.preferences.ColmenaPreferencesPage"       
+            class="es.uniovi.pulso.colmena.presentation.preferences.ColmenaUserPreferencePage"
+            id="es.uniovi.pulso.colmena.presentation.preferences.ColmenaUserPreferencePage"
+            name="User">
+      </page>      
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="es.uniovi.pulso.colmena.business.manager.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="es.uniovi.pulso.colmena"
+            name="Colmena">
+      </category>
+      <view
+            category="es.uniovi.pulso.colmena"
+            class="es.uniovi.pulso.colmena.views.ColmenaView"
+            icon="icons/start.png"
+            id="es.uniovi.pulso.colmena.views.ColmenaView"
+            name="ColmenaView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="es.uniovi.pulso.colmena.views.ColmenaView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.TaskList">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+  
+</plugin>
