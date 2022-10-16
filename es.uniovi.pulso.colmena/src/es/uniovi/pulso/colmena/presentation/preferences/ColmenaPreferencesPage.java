@@ -71,8 +71,9 @@ public class ColmenaPreferencesPage extends PreferencePage implements
 		label.setText("Maria Del Puerto Paule Ruiz");
 		label = new Label(parent, SWT.NONE);
 		label.setText("Victor Manuel Alvarez Garcia");
+		label = new Label(parent, SWT.NONE);
+        label.setText("Borja Rodríguez Lorenzo");
 		
-
 		label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label = new Label(parent, SWT.NONE);
 		label.setText("Official project page");
