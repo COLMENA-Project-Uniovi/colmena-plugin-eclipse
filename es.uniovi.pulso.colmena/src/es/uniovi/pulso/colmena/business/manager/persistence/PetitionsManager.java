@@ -6,6 +6,16 @@ import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
 import es.uniovi.pulso.colmena.model.ColmenaCompilation;
 import es.uniovi.pulso.colmena.model.ColmenaMarker;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 /**
  * Class that manages the persistence to data base
  * 
@@ -31,29 +41,70 @@ public class PetitionsManager {
 		this.pm = new PreferenceManager();
 	}
 
-
 	/**
 	 * Persist the markers
 	 * 
-	 * @param cmarkerList
-	 *            the list of markers
+	 * @param cmarkerList the list of markers
 	 */
 	public void saveMarkers(List<ColmenaMarker> cmarkerList, String ccompilation_id) {
 		for (ColmenaMarker c : cmarkerList) {
 			System.out.println("Insertamos esto -> : " + c.toString());
-//			factory.getColmenaMarkerDAO().insertColmenaMarker(c, ccompilation_id);
-
+			this.makePetition(c);
 		}
 	}
-	
+
 	/**
 	 * Store the type of compilation in the data base
-	 * @param currentUser 
+	 * 
+	 * @param currentUser
 	 * 
 	 * @param currentUser
 	 */
 	public void saveCompilation(ColmenaCompilation cc) {
 //		factory.getColmenaCompilationDAO().insertColmenaCompilation(cc);
+	}
+
+	/**
+	 * Method which sends the post petition to the API endpoint
+	 * 
+	 * @param maker
+	 * @return
+	 */
+	private String makePetition(ColmenaMarker marker) {
+		System.out.println("Mandamos la petición");
+		URL url;
+
+		try {
+			url = new URL("https://beta.colmenaproject.es/admin/api/1.0/errors/markers/add.json");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Accept", "application/json");
+			con.setDoOutput(true);
+			String jsonInputString = marker.toJson();
+
+			try (OutputStream os = con.getOutputStream()) {
+				byte[] input = jsonInputString.getBytes("utf-8");
+				os.write(input, 0, input.length);
+			}
+
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+				StringBuilder response = new StringBuilder();
+				String responseLine = null;
+				
+				while ((responseLine = br.readLine()) != null) {
+					response.append(responseLine.trim());
+				}
+				
+				System.out.println(response.toString());
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		return "hola";
 	}
 
 	/**
