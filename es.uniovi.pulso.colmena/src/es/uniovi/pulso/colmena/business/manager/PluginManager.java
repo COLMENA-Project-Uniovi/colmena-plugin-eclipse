@@ -129,6 +129,10 @@ public class PluginManager {
 						// Store the type of compilation in db
 						dbm.saveCompilation(cc);
 					}
+					
+					if(pm.isActivePetitions()) {
+						ptm.saveMarkers(colmenaMarkers, getCurrentUserId());
+					}
 
 				} else {
 					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.ERROR,
@@ -136,6 +140,10 @@ public class PluginManager {
 					// Cache
 					cm.addToCache(resource, colmenaMarkers);
 
+					if(pm.isActivePetitions()) {
+						ptm.saveMarkers(colmenaMarkers, getCurrentUserId());
+					}
+					
 					if (pm.isActiveFilePersistence()) {
 						// Store the markers in a file
 						dinamic = fm.saveCompilationType(cc, get_directory(), get_all_filename());
