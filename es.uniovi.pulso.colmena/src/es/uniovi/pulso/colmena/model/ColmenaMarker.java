@@ -161,6 +161,10 @@ public class ColmenaMarker {
 				+ gender + "\t" + lineNumber + "\t" + timestamp + "\t" + path
 				+ "\t" + projectPath + "\t" + ipAdress + "\t" + session_id;
 	}
+	
+	public String toJson() {				
+		return "{user_id: " + user.getId() + ", error_id: " + error_id + ", message: " + message + ", gender: " + gender + ", line_number: " + lineNumber + ", creation_time: " + timestamp + ", class_path: " + path + ", project_path: " + projectPath + ", ip: " + getIpAdress() + "}";
+	}
 
 	public String getFormat() {
 		return "User id\tError id\tMessage\tType\tLine Number\tCreation Time\tPath\tIP\tSession	";
