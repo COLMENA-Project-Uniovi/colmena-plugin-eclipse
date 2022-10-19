@@ -1,20 +1,17 @@
 package es.uniovi.pulso.colmena.business.manager.persistence;
 
-import java.util.List;
-
-import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
-import es.uniovi.pulso.colmena.model.ColmenaCompilation;
-import es.uniovi.pulso.colmena.model.ColmenaMarker;
-
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.List;
+
+import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
+import es.uniovi.pulso.colmena.model.ColmenaCompilation;
+import es.uniovi.pulso.colmena.model.ColmenaMarker;
 
 /**
  * Class that manages the persistence to data base
