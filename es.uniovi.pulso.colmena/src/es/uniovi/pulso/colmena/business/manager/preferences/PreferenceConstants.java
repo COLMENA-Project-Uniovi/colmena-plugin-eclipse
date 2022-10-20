@@ -9,6 +9,7 @@ public class PreferenceConstants {
 	public static final String COLMENA_STORE_IN_DB = "database";
 	public static final String COLMENA_STORE_IN_FILE = "file";
 	public static final String COLMENA_STORE_IN_FTP = "ftp";
+	public static final String COLMENA_POST = "post";
 	
 	//user settings
 	public static final String USER_NAME = System.getProperty("user.name");

@@ -19,11 +19,6 @@ public class ColmenaResourceVisitor implements IResourceDeltaVisitor {
 	 * changed.
 	 */
 	public boolean visit(IResourceDelta delta) {
-		// check that the resource changed is one resource where the problem
-		// markers were changed.
-		/*if(delta.getResource().getName().endsWith(".java") && delta.getResource().getType() == IResourceDelta.CONTENT){
-			
-		}*/
 		// controls if the type of resource is File type and no other type
 		// like folder or workspace		
 		if (delta.getResource().getType() == IResource.FILE && delta.getResource().getName().endsWith(".java")) {

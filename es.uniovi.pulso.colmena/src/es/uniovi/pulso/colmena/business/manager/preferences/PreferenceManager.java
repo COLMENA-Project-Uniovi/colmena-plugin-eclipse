@@ -89,6 +89,10 @@ public class PreferenceManager {
 	public boolean isActiveFtpPersistence() {
 		return pref.getBoolean(PreferenceConstants.COLMENA_STORE_IN_FTP);
 	}
+	
+	public boolean isActivePetitions() {
+		return pref.getBoolean(PreferenceConstants.COLMENA_POST);
+	}
 
 	public String getColmenaCompilationTableName() {
 		return pref.getString(PreferenceConstants.COLMENA_COMPILATIONS_TABLE);
