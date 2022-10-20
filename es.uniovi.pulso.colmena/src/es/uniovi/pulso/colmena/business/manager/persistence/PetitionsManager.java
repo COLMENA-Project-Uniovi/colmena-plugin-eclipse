@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.List;
 
 import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
-import es.uniovi.pulso.colmena.model.ColmenaCompilation;
 import es.uniovi.pulso.colmena.model.ColmenaMarker;
 
 /**
@@ -51,33 +50,24 @@ public class PetitionsManager {
 	}
 
 	/**
-	 * Store the type of compilation in the data base
-	 * 
-	 * @param currentUser
-	 * 
-	 * @param currentUser
-	 */
-	public void saveCompilation(ColmenaCompilation cc) {
-//		factory.getColmenaCompilationDAO().insertColmenaCompilation(cc);
-	}
-
-	/**
 	 * Method which sends the post petition to the API endpoint
 	 * 
 	 * @param maker
 	 * @return
 	 */
-	private String makePetition(ColmenaMarker marker) {
-		System.out.println("Mandamos la petición");
+	private void makePetition(ColmenaMarker marker) {
 		URL url;
 
 		try {
 			url = new URL("https://beta.colmenaproject.es/admin/api/1.0/errors/markers/add.json");
+
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/json");
 			con.setRequestProperty("Accept", "application/json");
 			con.setDoOutput(true);
+
 			String jsonInputString = marker.toJson();
 
 			try (OutputStream os = con.getOutputStream()) {
@@ -88,20 +78,16 @@ public class PetitionsManager {
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
 				StringBuilder response = new StringBuilder();
 				String responseLine = null;
-				
+
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
-				
-				System.out.println(response.toString());
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
-		return "hola";
 	}
 
 	/**

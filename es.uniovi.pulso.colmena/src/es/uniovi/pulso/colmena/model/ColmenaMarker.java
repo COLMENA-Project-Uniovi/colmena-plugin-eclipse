@@ -2,9 +2,13 @@ package es.uniovi.pulso.colmena.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+
+import com.google.gson.Gson;
 
 import es.uniovi.pulso.colmena.model.exception.ColmenaGeneralException;
 
@@ -36,15 +40,12 @@ public class ColmenaMarker {
 	/**
 	 * Constructor of the class
 	 * 
-	 * @param marker
-	 *            the IMarker object
-	 * @param currentUser
-	 *            the Owner of the error
-	 * @throws ColmenaGeneralException
-	 *             If any problem exists in the creating object operation.
+	 * @param marker      the IMarker object
+	 * @param currentUser the Owner of the error
+	 * @throws ColmenaGeneralException If any problem exists in the creating object
+	 *                                 operation.
 	 */
-	public ColmenaMarker(IMarker marker, ColmenaUser currentUser)
-			throws ColmenaGeneralException {
+	public ColmenaMarker(IMarker marker, ColmenaUser currentUser) throws ColmenaGeneralException {
 		try {
 			// assign values extracted from IMarker
 			this.error_id = marker.getAttribute("id");
@@ -64,20 +65,18 @@ public class ColmenaMarker {
 			}
 
 			// the current time in a specified format
-			this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss")
-					.format(new Date());
+			this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new Date());
 			// owner
 			this.user = currentUser;
 
-			this.projectPath = marker.getResource().getProject().getLocation()
-					.toString();
-			
+			this.projectPath = marker.getResource().getProject().getLocation().toString();
+
 			this.projectName = marker.getResource().getProject().getName();
 
 			this.path = marker.getResource().getLocation().toString();
 
-			this.ipAdress = obtainIP();					
-						
+			this.ipAdress = obtainIP();
+
 		} catch (CoreException ce) {
 			throw new ColmenaGeneralException("Error creating Colmena Markers");
 		}
@@ -107,18 +106,18 @@ public class ColmenaMarker {
 	public String getPath() {
 		return path;
 	}
-	
+
 	public String getProjectName() {
 		return projectName;
 	}
-	
+
 	public String getProjectPath() {
 		return projectPath;
 	}
-	
+
 	public String getClassName() {
 		String[] className = projectPath.split("/");
-		return className[className.length-1];
+		return className[className.length - 1];
 	}
 
 	public String getMessage() {
@@ -136,34 +135,50 @@ public class ColmenaMarker {
 	public String getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public String getIpAdress() {
 		return ipAdress;
 	}
-	
-	public int getSessionId(){
+
+	public int getSessionId() {
 		return session_id;
 	}
-	
-	public void setSessionId(int session_id){
+
+	public void setSessionId(int session_id) {
 		this.session_id = session_id;
 	}
 
 	@Override
 	public String toString() {
-		return user.toString() + "\t" + error_id + "\t" + message + "\t"
-				+ gender + "\t" + lineNumber + "\t" + timestamp + "\t" + path
-				+ "\t" + projectPath + "\t" + ipAdress + "\t" + session_id;
+		return user.toString() + "\t" + error_id + "\t" + message + "\t" + gender + "\t" + lineNumber + "\t" + timestamp
+				+ "\t" + path + "\t" + projectPath + "\t" + ipAdress + "\t" + session_id;
 	}
-	
+
 	public String toFile() {
-		return  "\t" + error_id + "\t" + user.toString() + "\t" + message + "\t"
-				+ gender + "\t" + lineNumber + "\t" + timestamp + "\t" + path
-				+ "\t" + projectPath + "\t" + ipAdress + "\t" + session_id;
+		return "\t" + error_id + "\t" + user.toString() + "\t" + message + "\t" + gender + "\t" + lineNumber + "\t"
+				+ timestamp + "\t" + path + "\t" + projectPath + "\t" + ipAdress + "\t" + session_id;
 	}
-	
-	public String toJson() {				
-		return "{user_id: " + user.getId() + ", error_id: " + error_id + ", message: " + message + ", gender: " + gender + ", line_number: " + lineNumber + ", creation_time: " + timestamp + ", class_path: " + path + ", project_path: " + projectPath + ", ip: " + getIpAdress() + "}";
+
+	/**
+	 * Method which makes a JSON string from the marker
+	 * 
+	 * @return String
+	 */
+	public String toJson() {
+		Gson gson = new Gson();
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("user_id", user.getId());
+		map.put("error_id", error_id.toString());
+		map.put("message", message.toString());
+		map.put("gender", gender);
+		map.put("project_path", projectPath);
+		map.put("class_path", path);
+		map.put("ip", getIpAdress());
+		map.put("line_number", lineNumber.toString());
+		map.put("creation_time", timestamp.substring(0, 9) + " " + timestamp.substring(10));
+
+		return gson.toJson(map);
 	}
 
 	public String getFormat() {
@@ -174,8 +189,7 @@ public class ColmenaMarker {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((error_id == null) ? 0 : error_id.hashCode());
+		result = prime * result + ((error_id == null) ? 0 : error_id.hashCode());
 		result = prime * result + ((message == null) ? 0 : message.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
@@ -213,6 +227,5 @@ public class ColmenaMarker {
 			return false;
 		return true;
 	}
-
 
 }
