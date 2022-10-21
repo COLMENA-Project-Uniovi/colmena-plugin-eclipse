@@ -18,10 +18,10 @@ import es.uniovi.pulso.colmena.model.ColmenaMarker;
  * @author Borja Rodríguez Lorenzo, PULSO Research Team, University of Oviedo
  * 
  */
-public class PetitionsManager {
+public class RequestManager {
 
 	// the instance
-	private static PetitionsManager instance;
+	private static RequestManager instance;
 
 	// manager
 	private PreferenceManager pm;
@@ -32,7 +32,7 @@ public class PetitionsManager {
 	private String userTableName;
 	private String errorTableName;
 
-	public PetitionsManager() {
+	public RequestManager() {
 		// start the manager and factory of DAOS
 		this.pm = new PreferenceManager();
 	}
@@ -95,9 +95,9 @@ public class PetitionsManager {
 	 * 
 	 * @return the instance of the object
 	 */
-	public static PetitionsManager getInstance() {
+	public static RequestManager getInstance() {
 		if (instance == null) {
-			instance = new PetitionsManager();
+			instance = new RequestManager();
 		}
 		return instance;
 	}

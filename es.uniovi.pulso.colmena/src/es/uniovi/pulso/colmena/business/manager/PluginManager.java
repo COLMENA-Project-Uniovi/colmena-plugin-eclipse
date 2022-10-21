@@ -11,7 +11,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import es.uniovi.pulso.colmena.business.manager.persistence.DataBaseManager;
 import es.uniovi.pulso.colmena.business.manager.persistence.FTPManager;
 import es.uniovi.pulso.colmena.business.manager.persistence.FileManager;
-import es.uniovi.pulso.colmena.business.manager.persistence.PetitionsManager;
+import es.uniovi.pulso.colmena.business.manager.persistence.RequestManager;
 import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
 import es.uniovi.pulso.colmena.model.ColmenaCompilation;
 import es.uniovi.pulso.colmena.model.ColmenaMarker;
@@ -40,7 +40,7 @@ public class PluginManager {
 	// the data base manager
 	private DataBaseManager dbm;
 	// the petitions manager
-	private PetitionsManager ptm;
+	private RequestManager ptm;
 	// enabled or disabled plugin
 	private boolean enabled;
 	// user Manager
@@ -71,7 +71,7 @@ public class PluginManager {
 			this.ftpm = new FTPManager();
 
 		if (pm.isActivePetitions())
-			this.ptm = new PetitionsManager();
+			this.ptm = new RequestManager();
 		
 		this.cm = CacheManager.getInstance();
 		// enable the plugin
