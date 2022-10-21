@@ -74,7 +74,6 @@ public class ColmenaPreferencesPage extends PreferencePage implements
 		label = new Label(parent, SWT.NONE);
 		label.setText("Borja Rodríguez Lorenzo");
 		
-
 		label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label = new Label(parent, SWT.NONE);
 		label.setText("Official project page");
