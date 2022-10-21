@@ -27,7 +27,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FTP, false);
 		store.setDefault(PreferenceConstants.COLMENA_POST, true);
 
-		// Data-base settings
+		// request settings
+		store.setDefault(PreferenceConstants.COLMENA_ENDPOINT, "https://beta.colmenaproject.es/admin/api/1.0/errors/markers/add.json");
+		
+		// database settings
 		store.setDefault(PreferenceConstants.DATABASE_HOST_NAME, "www.pulso.uniovi.es");
 		store.setDefault(PreferenceConstants.DATABASE_HOST_PORT, "80");
 		store.setDefault(PreferenceConstants.DATABASE_NAME, "colmena");
