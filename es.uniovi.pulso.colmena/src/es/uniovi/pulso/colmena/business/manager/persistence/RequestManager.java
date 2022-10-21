@@ -59,7 +59,7 @@ public class RequestManager {
 		URL url;
 
 		try {
-			url = new URL("https://beta.colmenaproject.es/admin/api/1.0/errors/markers/add.json");
+			url = new URL(pm.obtainCurrentEndpoint());
 
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 

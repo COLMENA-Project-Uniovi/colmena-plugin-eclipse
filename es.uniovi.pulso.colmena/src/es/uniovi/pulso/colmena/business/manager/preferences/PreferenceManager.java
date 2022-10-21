@@ -58,6 +58,10 @@ public class PreferenceManager {
 		return pref.getString(PreferenceConstants.FTP_USER_PASS);
 	}
 	
+	public String obtainCurrentEndpoint() {
+		return pref.getString(PreferenceConstants.COLMENA_ENDPOINT);
+	}
+	
 	public String obtainCurrentDatabaseHostName() {
 		return pref.getString(PreferenceConstants.DATABASE_HOST_NAME);
 	}
