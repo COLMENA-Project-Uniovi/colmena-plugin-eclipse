@@ -22,9 +22,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
 		// persistence types settings
-		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_DB, true);
-		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FILE, true);
-		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FTP, true);
+		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_DB, false);
+		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FILE, false);
+		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FTP, false);
+		store.setDefault(PreferenceConstants.COLMENA_POST, true);
 
 		// Data-base settings
 		store.setDefault(PreferenceConstants.DATABASE_HOST_NAME, "www.pulso.uniovi.es");
