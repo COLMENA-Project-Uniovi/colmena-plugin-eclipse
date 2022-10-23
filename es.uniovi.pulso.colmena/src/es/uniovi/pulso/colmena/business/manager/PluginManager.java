@@ -106,11 +106,11 @@ public class PluginManager {
 				lastresource = resource;
 
 				List<ColmenaMarker> colmenaMarkers = mm.obtainMarkers(resource, um.getCurrentUser());
+				String compilationID;
 
 				File dinamic = null;
 				File nonCached = null;
 
-				System.out.println("Markers:" + colmenaMarkers);
 				// if NO ERRORS O WARNINGS
 				if (colmenaMarkers.isEmpty()) {
 					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.OK, resource,
@@ -131,17 +131,19 @@ public class PluginManager {
 					}
 					
 					if(pm.isActivePetitions()) {
-						ptm.saveMarkers(colmenaMarkers, getCurrentUserId());
+						compilationID = ptm.saveCompilation(cc);
 					}
 
 				} else {
 					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.ERROR,
 							resource, colmenaMarkers.size());
+					
 					// Cache
 					cm.addToCache(resource, colmenaMarkers);
 
 					if(pm.isActivePetitions()) {
-						ptm.saveMarkers(colmenaMarkers, getCurrentUserId());
+						compilationID = ptm.saveCompilation(cc);
+						ptm.saveMarkers(colmenaMarkers, compilationID);
 					}
 					
 					if (pm.isActiveFilePersistence()) {
@@ -172,13 +174,6 @@ public class PluginManager {
 							if (ftpm == null)
 								this.ftpm = FTPManager.getInstance();
 
-							/* TO DO */
-							/*
-							 * if(dinamic == null) dinamic = fm.saveMarkersToCVS(colmenaMarkers,
-							 * pm.getFileName() + "-a-"+ resource.getProject().getName()); if(nonCached ==
-							 * null) nonCached = fm.saveMarkersToCVS(cm.getFinalErrorList(),
-							 * pm.getFileName() + "-"+ resource.getProject().getName());
-							 */
 							ftpm.sendFile(dinamic);
 							ftpm.sendFile(nonCached);
 
