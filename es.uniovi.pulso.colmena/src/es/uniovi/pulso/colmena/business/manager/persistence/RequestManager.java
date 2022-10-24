@@ -9,7 +9,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
+import es.uniovi.pulso.colmena.model.ColmenaCompilation;
 import es.uniovi.pulso.colmena.model.ColmenaMarker;
 
 /**
@@ -33,7 +37,6 @@ public class RequestManager {
 	private String errorTableName;
 
 	public RequestManager() {
-		// start the manager and factory of DAOS
 		this.pm = new PreferenceManager();
 	}
 
@@ -42,33 +45,60 @@ public class RequestManager {
 	 * 
 	 * @param cmarkerList the list of markers
 	 */
-	public void saveMarkers(List<ColmenaMarker> cmarkerList, String ccompilation_id) {
-		for (ColmenaMarker c : cmarkerList) {
-			System.out.println("Insertamos esto -> : " + c.toString());
-			this.makePetition(c);
+	public void saveMarkers(List<ColmenaMarker> cmarkerList, String compilationID) {
+		URL url;
+
+		try {
+			url = new URL(pm.obtainMakersEndpoint());
+
+			for (ColmenaMarker c : cmarkerList) {
+				makeRequest(url, c.toJson(compilationID), "marker");
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
+
+	}
+
+	/**
+	 * Method which prepares the params for the request method
+	 * 
+	 * @param compilation
+	 */
+	public String saveCompilation(ColmenaCompilation compilation) {
+		String json = compilation.toJson();
+		String response = "";
+
+		try {
+			URL url = new URL(pm.obtainCompilationsEndpoint());
+
+			response = makeRequest(url, json, "compilation");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		return response;
 	}
 
 	/**
 	 * Method which sends the post petition to the API endpoint
 	 * 
-	 * @param maker
-	 * @return
+	 * @param requestURL
+	 * @param json
 	 */
-	private void makePetition(ColmenaMarker marker) {
-		URL url;
+	private String makeRequest(URL requestURL, String json, String type) {
+		String compilationID = "";
+		Gson gson = new Gson();
 
 		try {
-			url = new URL(pm.obtainCurrentEndpoint());
-
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			HttpURLConnection con = (HttpURLConnection) requestURL.openConnection();
 
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/json");
 			con.setRequestProperty("Accept", "application/json");
 			con.setDoOutput(true);
 
-			String jsonInputString = marker.toJson();
+			String jsonInputString = json;
 
 			try (OutputStream os = con.getOutputStream()) {
 				byte[] input = jsonInputString.getBytes("utf-8");
@@ -82,12 +112,19 @@ public class RequestManager {
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
+
+				if (type == "compilation") {
+					JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
+					compilationID = jsonObject.get("data").toString();
+				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+
+		return compilationID;
 	}
 
 	/**

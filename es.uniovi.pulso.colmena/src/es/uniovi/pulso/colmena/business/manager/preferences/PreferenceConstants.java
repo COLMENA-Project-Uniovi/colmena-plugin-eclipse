@@ -15,7 +15,8 @@ public class PreferenceConstants {
 	public static final String USER_NAME = System.getProperty("user.name");
 	
 	// requests settings
-	public static final String COLMENA_ENDPOINT = "colmena_endpoint";
+	public static final String COLMENA_MARKERS_ENDPOINT = "colmena_markers_endpoint";
+	public static final String COLMENA_COMPILATIONS_ENDPOINT = "colmena_compilations_endpoint";
 
 	// database settings
 	public static final String DATABASE_HOST_NAME = "database_host_name";

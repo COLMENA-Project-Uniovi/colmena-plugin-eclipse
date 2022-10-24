@@ -60,9 +60,6 @@ public class DataBaseManager {
 
 			// open the connection
 			openConnection();
-
-			// check the tables for persistence
-			// checkBaseTables();
 		} catch (ColmenaPersistenceException cpe) {
 			cpe.printStackTrace();
 		}
@@ -77,7 +74,6 @@ public class DataBaseManager {
 	 */
 	public void saveMarkers(List<ColmenaMarker> cmarkerList, String ccompilation_id) {
 		for (ColmenaMarker c : cmarkerList) {
-			System.out.println("Insertamos esto -> : " + c.toString());
 			factory.getColmenaMarkerDAO().insertColmenaMarker(c, ccompilation_id);
 
 		}

@@ -2,8 +2,12 @@ package es.uniovi.pulso.colmena.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
+
+import com.google.gson.Gson;
 
 import es.uniovi.pulso.colmena.model.exception.ColmenaGeneralException;
 
@@ -41,7 +45,7 @@ public class ColmenaCompilation {
 				
 				Date now = new Date();
 				// the current time in a specified format
-				this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss")
+				this.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 						.format(now);
 				// owner
 				this.user = currentUser;
@@ -112,6 +116,26 @@ public class ColmenaCompilation {
 		public String toFile() {
 			return type + "_COMPILATION\t" + timestamp + "\t" + nMarkers + "markers\t" +  projectName
 					+ "\t" + className + "\t" + ipAdress;
+		}
+		
+		/**
+		 * Method which makes a JSON string from the marker
+		 * 
+		 * @return String
+		 */
+		public String toJson() {
+			Gson gson = new Gson();
+			
+			Map<String, String> map = new HashMap<>();
+			map.put("user_id", user.getId());
+			map.put("type", type);
+			map.put("timestamp", getTimestamp());
+			map.put("num_markers", Integer.toString(getNMarkers()));
+			map.put("project_name", getProjectName());
+			map.put("class_name", getClassName());
+			map.put("ip", getIpAdress());
+
+			return gson.toJson(map);
 		}
 
 		public String getFormat() {
