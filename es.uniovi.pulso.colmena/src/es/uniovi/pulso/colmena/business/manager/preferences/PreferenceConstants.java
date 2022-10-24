@@ -11,10 +11,13 @@ public class PreferenceConstants {
 	public static final String COLMENA_STORE_IN_FTP = "ftp";
 	public static final String COLMENA_POST = "post";
 	
-	//user settings
+	// user settings
 	public static final String USER_NAME = System.getProperty("user.name");
+	
+	// requests settings
+	public static final String COLMENA_ENDPOINT = "colmena_endpoint";
 
-	//Data base settings
+	// database settings
 	public static final String DATABASE_HOST_NAME = "database_host_name";
 	public static final String DATABASE_HOST_PORT = "database_host_port";
 	public static final String DATABASE_NAME = "database_name";
@@ -27,7 +30,7 @@ public class PreferenceConstants {
 	public static final String COLMENA_MARKER_TABLE = "colmena_marker";
 	public static final String COLMENA_COMPILATIONS_TABLE = "colmena_compilations";
 	
-	//folder & file name
+	// folder & file name
 	public static final String FOLDER_NAME = "Colmena Results";
 	public static final String FILE_NAME = "Colmena";
 	

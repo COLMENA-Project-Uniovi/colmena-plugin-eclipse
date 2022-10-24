@@ -32,16 +32,19 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
 	private BooleanFieldEditor databasePrefEditor;
+	private BooleanFieldEditor requestPrefEditor;
 	private BooleanFieldEditor filePrefEditor;
 	private BooleanFieldEditor ftpPrefEditor;
+	
 	private StringFieldEditor databaseHostName;
-	// private StringFieldEditor databaseHostPort;
 	private StringFieldEditor dataBaseName;
 	private StringFieldEditor databaseUserName;
 	private StringFieldEditor databaseUserPassword;
 
 	private StringFieldEditor folderName;
 	private StringFieldEditor fileName;
+	
+	private StringFieldEditor endpoint;
 	
 	private StringFieldEditor ftpHostName;
 	private StringFieldEditor ftpHostPort;
@@ -65,15 +68,25 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 	 */
 	public void createFieldEditors() {
 		parent = getFieldEditorParent();
-
+		
+		// Request's fields
+		requestPrefEditor = new BooleanFieldEditor(
+				PreferenceConstants.COLMENA_POST,
+				"Send POST request to the endpoint", parent);
+		
+		endpoint = new StringFieldEditor(
+				PreferenceConstants.COLMENA_ENDPOINT, "Endpoint : ", parent);
+		
+		addField(requestPrefEditor);
+		addField(endpoint);
+		
+		
+		// Database's fields
 		databasePrefEditor = new BooleanFieldEditor(
 				PreferenceConstants.COLMENA_STORE_IN_DB,
 				"Store the data in a MySql database", parent);
 		databaseHostName = new StringFieldEditor(
 				PreferenceConstants.DATABASE_HOST_NAME, "Host Name : ", parent);
-
-		// databaseHostPort = new StringFieldEditor(
-		// PreferenceConstants.DATABASE_HOST_PORT, "Host Port: ", parent);
 
 		dataBaseName = new StringFieldEditor(PreferenceConstants.DATABASE_NAME,
 				"Database Name : ", parent);
@@ -89,11 +102,12 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 
 		addField(databasePrefEditor);
 		addField(databaseHostName);
-		// addField(databaseHostPort);
 		addField(dataBaseName);
 		addField(databaseUserName);
 		addField(databaseUserPassword);
 
+		
+		// FTP fields
 		filePrefEditor = new BooleanFieldEditor(
 				PreferenceConstants.COLMENA_STORE_IN_FILE,
 				"Store the data in a txt file", parent);
@@ -106,7 +120,7 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 				"File name : ", parent);
 		addField(fileName);
 		
-		// Ftp preferences
+		// FTP preferences
 		ftpPrefEditor = new BooleanFieldEditor(
 				PreferenceConstants.COLMENA_STORE_IN_FTP,
 				"Store the data with a FTP conection", parent);
@@ -243,7 +257,8 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 	private boolean checkCheckBoxes() {
 		if (!databasePrefEditor.getBooleanValue()
 				&& !filePrefEditor.getBooleanValue()
-					&& !ftpPrefEditor.getBooleanValue()) {
+					&& !ftpPrefEditor.getBooleanValue()
+						&&!requestPrefEditor.getBooleanValue()) {
 			return false;
 		}
 		return true;
@@ -251,7 +266,6 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 
 	private boolean checkDatabaseField() {
 		if (databaseHostName.getStringValue().isEmpty()
-				// || databaseHostPort.getStringValue().isEmpty()
 				|| dataBaseName.getStringValue().isEmpty()
 				|| databaseUserName.getStringValue().isEmpty()
 				|| databaseUserPassword.getStringValue().isEmpty()
