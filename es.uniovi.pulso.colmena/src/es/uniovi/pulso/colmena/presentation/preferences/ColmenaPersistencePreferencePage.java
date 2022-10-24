@@ -44,7 +44,8 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 	private StringFieldEditor folderName;
 	private StringFieldEditor fileName;
 	
-	private StringFieldEditor endpoint;
+	private StringFieldEditor markersEndpoint;
+	private StringFieldEditor compilationsEndpoint;
 	
 	private StringFieldEditor ftpHostName;
 	private StringFieldEditor ftpHostPort;
@@ -72,13 +73,17 @@ public class ColmenaPersistencePreferencePage extends FieldEditorPreferencePage
 		// Request's fields
 		requestPrefEditor = new BooleanFieldEditor(
 				PreferenceConstants.COLMENA_POST,
-				"Send POST request to the endpoint", parent);
+				"Send POST request to the endpoints", parent);
 		
-		endpoint = new StringFieldEditor(
-				PreferenceConstants.COLMENA_ENDPOINT, "Endpoint : ", parent);
+		markersEndpoint = new StringFieldEditor(
+				PreferenceConstants.COLMENA_MARKERS_ENDPOINT, "Markers endpoint : ", parent);
+		
+		compilationsEndpoint = new StringFieldEditor(
+				PreferenceConstants.COLMENA_COMPILATIONS_ENDPOINT, "Compilations endpoint : ", parent);
 		
 		addField(requestPrefEditor);
-		addField(endpoint);
+		addField(markersEndpoint);
+		addField(compilationsEndpoint);
 		
 		
 		// Database's fields

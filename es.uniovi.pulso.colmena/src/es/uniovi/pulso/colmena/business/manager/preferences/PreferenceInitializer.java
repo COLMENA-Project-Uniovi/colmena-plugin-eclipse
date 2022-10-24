@@ -28,7 +28,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.COLMENA_POST, true);
 
 		// request settings
-		store.setDefault(PreferenceConstants.COLMENA_ENDPOINT, "https://beta.colmenaproject.es/admin/api/1.0/errors/markers/add.json");
+		store.setDefault(PreferenceConstants.COLMENA_MARKERS_ENDPOINT, "https://beta.colmenaproject.es/admin/api/1.0/errors/markers/add.json");
+		store.setDefault(PreferenceConstants.COLMENA_COMPILATIONS_ENDPOINT, "https://beta.colmenaproject.es/admin/api/1.0/errors/compilations/add.json");
 		
 		// database settings
 		store.setDefault(PreferenceConstants.DATABASE_HOST_NAME, "www.pulso.uniovi.es");

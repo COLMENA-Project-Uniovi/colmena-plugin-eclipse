@@ -64,17 +64,11 @@ public class ColmenaMarker {
 				break;
 			}
 
-			// the current time in a specified format
-			this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new Date());
-			// owner
+			this.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 			this.user = currentUser;
-
 			this.projectPath = marker.getResource().getProject().getLocation().toString();
-
 			this.projectName = marker.getResource().getProject().getName();
-
 			this.path = marker.getResource().getLocation().toString();
-
 			this.ipAdress = obtainIP();
 
 		} catch (CoreException ce) {
@@ -161,10 +155,11 @@ public class ColmenaMarker {
 
 	/**
 	 * Method which makes a JSON string from the marker
+	 * @param compilationID 
 	 * 
 	 * @return String
 	 */
-	public String toJson() {
+	public String toJson(String compilationID) {
 		Gson gson = new Gson();
 		
 		Map<String, String> map = new HashMap<>();
@@ -172,11 +167,13 @@ public class ColmenaMarker {
 		map.put("error_id", error_id.toString());
 		map.put("message", message.toString());
 		map.put("gender", gender);
-		map.put("project_path", projectPath);
+		map.put("class_name", getClassName());
 		map.put("class_path", path);
+		map.put("project_path", projectPath);
 		map.put("ip", getIpAdress());
 		map.put("line_number", lineNumber.toString());
-		map.put("creation_time", timestamp.substring(0, 9) + " " + timestamp.substring(10));
+		map.put("creation_time", timestamp);
+		map.put("compilation_id", compilationID);
 
 		return gson.toJson(map);
 	}
