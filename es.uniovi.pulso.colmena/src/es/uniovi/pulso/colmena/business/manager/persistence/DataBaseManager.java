@@ -122,8 +122,6 @@ public class DataBaseManager {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			//throw new ColmenaPersistenceException(
-				//	"Unexpected problem openning connection");
 		}
 	}
 	/**
@@ -156,7 +154,6 @@ public class DataBaseManager {
 	 */
 	private void obtainValuesOfConnection() {
 		databaseHostName = pm.obtainCurrentDatabaseHostName();
-		// databaseHostPort = pm.obtainCurrentDatabaseHostPort();
 		databaseName = pm.obtainCurrentDatabaseName();
 		databaseUserName = pm.obtainCurrentDatabaseUserName();
 		databaseUserPass = pm.obtainCurrentDatabaseUserPass();

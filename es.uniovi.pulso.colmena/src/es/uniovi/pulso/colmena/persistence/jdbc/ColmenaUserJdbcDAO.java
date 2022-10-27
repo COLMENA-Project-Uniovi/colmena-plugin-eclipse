@@ -28,6 +28,7 @@ public class ColmenaUserJdbcDAO implements ColmenaUserDAO {
 			// query elaboration in jdbc
 			PreparedStatement ps = connection.prepareStatement(url);
 			ps.setString(1, user.getId());
+			
 			ResultSet rs = ps.executeQuery();
 			// check if something is returned
 			if (rs.next()) {
@@ -44,13 +45,16 @@ public class ColmenaUserJdbcDAO implements ColmenaUserDAO {
 	public void insertUser(ColmenaUser user) {
 		// connection
 		Connection connection = DataBaseManager.getInstance().getConnection();
-		// query
-		String url = "insert into " + tableName + " (id, password, subject, academic_year) values(?, ?, 0, 2014)";
+		
+		// queryØ
+		String url = "insert into " + tableName + " (id, name, password) values(?, ?, ?)";
+		
 		try {
 			// query elaboration in jdbc
 			PreparedStatement ps = connection.prepareStatement(url);
 			ps.setString(1, user.getId());
 			ps.setString(2, user.getId());
+			ps.setString(3, user.getId());
 			ps.executeUpdate();
 
 		} catch (Exception e) {
