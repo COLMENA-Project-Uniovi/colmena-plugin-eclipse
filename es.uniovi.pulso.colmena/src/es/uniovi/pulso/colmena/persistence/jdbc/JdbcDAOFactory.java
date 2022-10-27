@@ -1,7 +1,6 @@
 package es.uniovi.pulso.colmena.persistence.jdbc;
 
 import es.uniovi.pulso.colmena.persistence.dao.ColmenaCompilationDAO;
-import es.uniovi.pulso.colmena.persistence.dao.ColmenaErrorDAO;
 import es.uniovi.pulso.colmena.persistence.dao.ColmenaMarkerDAO;
 import es.uniovi.pulso.colmena.persistence.dao.ColmenaUserDAO;
 import es.uniovi.pulso.colmena.persistence.dao.DAOFactory;
@@ -22,12 +21,6 @@ public class JdbcDAOFactory implements DAOFactory {
 	@Override
 	public ColmenaMarkerDAO getColmenaMarkerDAO() {
 		return new ColmenaMarkerJdbcDAO();
-	}
-
-	@Override
-	public ColmenaErrorDAO getColmenaErrorDAO() {
-		// return new ColmenaErrorJdbcDAO();
-		return null;
 	}
 
 	@Override

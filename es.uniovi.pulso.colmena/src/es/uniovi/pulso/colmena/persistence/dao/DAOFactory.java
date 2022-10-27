@@ -19,12 +19,6 @@ public interface DAOFactory {
 	public ColmenaMarkerDAO getColmenaMarkerDAO();
 	
 	/**
-	 * Returns a ColmenErrorDAO
-	 * @return the ColmenaErrorDAO object
-	 */
-	public ColmenaErrorDAO getColmenaErrorDAO();
-	
-	/**
 	 * Returns a ColmenCompilationDAO
 	 * @return the ColmenaCompilationDAO object
 	 */
