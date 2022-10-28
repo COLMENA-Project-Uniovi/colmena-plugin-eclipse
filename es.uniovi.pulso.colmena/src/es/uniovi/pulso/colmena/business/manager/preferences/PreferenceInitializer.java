@@ -22,7 +22,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
 		// persistence types settings
-		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_DB, false);
+		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_DB, true);
 		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FILE, false);
 		store.setDefault(PreferenceConstants.COLMENA_STORE_IN_FTP, false);
 		store.setDefault(PreferenceConstants.COLMENA_POST, true);
@@ -32,11 +32,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.COLMENA_COMPILATIONS_ENDPOINT, "https://beta.colmenaproject.es/admin/api/1.0/errors/compilations/add.json");
 		
 		// database settings
-		store.setDefault(PreferenceConstants.DATABASE_HOST_NAME, "www.pulso.uniovi.es");
-		store.setDefault(PreferenceConstants.DATABASE_HOST_PORT, "80");
-		store.setDefault(PreferenceConstants.DATABASE_NAME, "colmena");
-		store.setDefault(PreferenceConstants.DATABASE_USER_NAME, "colmena");
-		store.setDefault(PreferenceConstants.DATABASE_USER_PASS, "C0lm3n4");
+		store.setDefault(PreferenceConstants.DATABASE_HOST_NAME, "94.127.187.103");
+		store.setDefault(PreferenceConstants.DATABASE_NAME, "admin_colmena");
+		store.setDefault(PreferenceConstants.DATABASE_USER_NAME, "colmena_admin");
+		store.setDefault(PreferenceConstants.DATABASE_USER_PASS, "9W$ecd709");
+		store.setDefault(PreferenceConstants.DATABASE_HOST_PORT, "3306");
 
 		// user settings
 		store.setDefault(PreferenceConstants.USER_NAME, System.getProperty("user.name"));
