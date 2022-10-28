@@ -30,12 +30,6 @@ public class RequestManager {
 	// manager
 	private PreferenceManager pm;
 
-	// values of the tables
-	private String compilationTableName;
-	private String markerTableName;
-	private String userTableName;
-	private String errorTableName;
-
 	public RequestManager() {
 		this.pm = new PreferenceManager();
 	}
@@ -142,21 +136,4 @@ public class RequestManager {
 	public PreferenceManager getPm() {
 		return pm;
 	}
-
-	public String getMarkerTableName() {
-		return markerTableName;
-	}
-
-	public String getUserTableName() {
-		return userTableName;
-	}
-
-	public String getErrorTableName() {
-		return errorTableName;
-	}
-
-	public String getCompilationTableName() {
-		return compilationTableName;
-	}
-
 }
