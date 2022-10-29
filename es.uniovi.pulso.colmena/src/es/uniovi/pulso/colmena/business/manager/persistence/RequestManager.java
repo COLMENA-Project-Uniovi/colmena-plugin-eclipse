@@ -9,10 +9,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import es.uniovi.pulso.colmena.business.manager.preferences.PreferenceManager;
+import es.uniovi.pulso.colmena.business.manager.source.SourceManager;
 import es.uniovi.pulso.colmena.model.ColmenaCompilation;
 import es.uniovi.pulso.colmena.model.ColmenaMarker;
 
@@ -29,7 +36,13 @@ public class RequestManager {
 
 	// manager
 	private PreferenceManager pm;
+	
+	// source manager
+	private SourceManager sm;
 
+	/**
+	 * Constructor
+	 */
 	public RequestManager() {
 		this.pm = new PreferenceManager();
 	}
@@ -39,23 +52,31 @@ public class RequestManager {
 	 * 
 	 * @param cmarkerList the list of markers
 	 */
-	public void saveMarkers(List<ColmenaMarker> cmarkerList, String compilationID) {
-		URL url;
-
+	public void saveMarkers(IResource resource, List<ColmenaMarker> cmarkerList, String compilationID) {
+		IJavaElement javaElement = JavaCore.create(resource);
+		this.sm = new SourceManager((ICompilationUnit) javaElement);
+		String source = "";
+		
 		try {
-			url = new URL(pm.obtainMakersEndpoint());
-
+			URL url = new URL(pm.obtainMakersEndpoint());
+			int a = 0;
+			System.out.println("Numero de markers: " + cmarkerList.size());
+			
 			for (ColmenaMarker c : cmarkerList) {
-				makeRequest(url, c.toJson(compilationID), "marker");
+				a++;
+				source = sm.obtainSourceCode(resource, c);
+				makeRequest(url, c.toJson(compilationID, source), "marker");
+				System.out.println("MARKER RECORRIDO: " + a);
+				
 			}
-		} catch (MalformedURLException e) {
+		} catch (MalformedURLException | JavaModelException e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	/**
-	 * Method which prepares the params for the request method
+	 * Method which prepares the parameters for the request method
 	 * 
 	 * @param compilation
 	 */
@@ -92,10 +113,8 @@ public class RequestManager {
 			con.setRequestProperty("Accept", "application/json");
 			con.setDoOutput(true);
 
-			String jsonInputString = json;
-
 			try (OutputStream os = con.getOutputStream()) {
-				byte[] input = jsonInputString.getBytes("utf-8");
+				byte[] input = json.getBytes("utf-8");
 				os.write(input, 0, input.length);
 			}
 
@@ -135,5 +154,9 @@ public class RequestManager {
 
 	public PreferenceManager getPm() {
 		return pm;
+	}
+	
+	public SourceManager getSm() {
+		return sm;
 	}
 }
