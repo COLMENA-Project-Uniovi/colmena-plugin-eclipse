@@ -31,26 +31,37 @@ public class PluginManager {
 	private static PluginManager manager;
 	// a MarkerManager object
 	private MarkerManager mm;
+
 	// the file manager object
 	private FileManager fm;
-	// the ftp manager object
+
+	// the FTP manager object
 	private FTPManager ftpm;
+
 	// the preferences manager
 	private PreferenceManager pm;
+
 	// the data base manager
 	private DataBaseManager dbm;
-	// the petitions manager
-	private RequestManager ptm;
+
+	// the requests manager
+	private RequestManager rm;
+
 	// enabled or disabled plugin
 	private boolean enabled;
+
 	// user Manager
 	private UserManager um;
+
 	// cache Manager
 	private CacheManager cm;
+
 	// count how many executions has been run
 	private int counter;
+
 	// moment since last execution
 	private long start;
+
 	// last resource that has been analize by colmena
 	private IResource lastresource;
 
@@ -66,13 +77,13 @@ public class PluginManager {
 
 		if (pm.isActiveDatabasePersistence())
 			this.dbm = DataBaseManager.getInstance();
-		
+
 		if (pm.isActiveFtpPersistence())
 			this.ftpm = new FTPManager();
 
 		if (pm.isActivePetitions())
-			this.ptm = new RequestManager();
-		
+			this.rm = new RequestManager();
+
 		this.cm = CacheManager.getInstance();
 		// enable the plugin
 		this.enabled = false;
@@ -106,6 +117,7 @@ public class PluginManager {
 				lastresource = resource;
 
 				List<ColmenaMarker> colmenaMarkers = mm.obtainMarkers(resource, um.getCurrentUser());
+
 				String compilationID;
 
 				File dinamic = null;
@@ -113,8 +125,7 @@ public class PluginManager {
 
 				// if NO ERRORS O WARNINGS
 				if (colmenaMarkers.isEmpty()) {
-					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.OK, resource,
-							0);
+					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.OK, resource, 0);
 
 					if (pm.isActiveFilePersistence()) {
 						dinamic = fm.saveCompilationType(cc, get_directory(), get_all_filename());
@@ -124,32 +135,34 @@ public class PluginManager {
 					if (pm.isActiveDatabasePersistence()) {
 						if (dbm == null)
 							this.dbm = DataBaseManager.getInstance();
+						
 						// Store the user
 						dbm.saveUser(um.getCurrentUser());
-						// Store the type of compilation in db
+						
+						// Store the type of compilation in database
 						dbm.saveCompilation(cc);
 					}
 					
 					if(pm.isActivePetitions()) {
-						compilationID = ptm.saveCompilation(cc);
+						compilationID = rm.saveCompilation(cc);
 					}
 
 				} else {
-					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.ERROR,
-							resource, colmenaMarkers.size());
+					ColmenaCompilation cc = new ColmenaCompilation(um.getCurrentUser(), ColmenaCompilation.ERROR, resource, colmenaMarkers.size());
 					
 					// Cache
 					cm.addToCache(resource, colmenaMarkers);
 
 					if(pm.isActivePetitions()) {
-						compilationID = ptm.saveCompilation(cc);
-						ptm.saveMarkers(colmenaMarkers, compilationID);
+						compilationID = rm.saveCompilation(cc);
+						rm.saveMarkers(resource, colmenaMarkers, compilationID);
 					}
 					
 					if (pm.isActiveFilePersistence()) {
 						// Store the markers in a file
 						dinamic = fm.saveCompilationType(cc, get_directory(), get_all_filename());
 						dinamic = fm.saveMarkersToCVS(colmenaMarkers, dinamic);
+						
 						// for the markers real, noncached
 						nonCached = fm.saveCompilationType(cc, get_directory(), get_non_cached_filename());
 						nonCached = fm.saveMarkersToCVS(cm.getFinalErrorList(), nonCached);

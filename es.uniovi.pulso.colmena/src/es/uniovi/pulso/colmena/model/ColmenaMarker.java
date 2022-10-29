@@ -1,6 +1,7 @@
 package es.uniovi.pulso.colmena.model;
 
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,8 @@ public class ColmenaMarker {
 	private String projectPath;
 	private String path;
 	private String ipAdress;
-	private int session_id = -1; // A�adido el id de la sesi�n a la que pertenece
+	
+	private int session_id = -1; // Añadido el id de la sesion a la que pertenece
 
 	/**
 	 * Constructor of the class
@@ -159,7 +161,7 @@ public class ColmenaMarker {
 	 * 
 	 * @return String
 	 */
-	public String toJson(String compilationID) {
+	public String toJson(String compilationID, String sourceCode) {
 		Gson gson = new Gson();
 		
 		Map<String, String> map = new HashMap<>();
@@ -174,6 +176,7 @@ public class ColmenaMarker {
 		map.put("line_number", lineNumber.toString());
 		map.put("creation_time", timestamp);
 		map.put("compilation_id", compilationID);
+		map.put("source", Base64.getEncoder().encodeToString(sourceCode.getBytes()));
 
 		return gson.toJson(map);
 	}
