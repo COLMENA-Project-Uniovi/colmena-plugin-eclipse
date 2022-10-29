@@ -80,8 +80,8 @@ public class ColmenaTree {
 	 */
 	private void createGlobalFile(ICompilationUnit unit)
 			throws JavaModelException {
-		// extract name and the complete content (source), whit the number of
-		// lines also
+		// extract name and the complete content (source), whitf the number of
+		// lines too
 		String nameFile = unit.getElementName();
 		String sourceFile = unit.getSource();
 		int lines = document.getNumberOfLines();

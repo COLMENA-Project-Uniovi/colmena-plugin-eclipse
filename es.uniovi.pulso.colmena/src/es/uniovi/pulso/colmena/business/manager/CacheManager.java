@@ -60,19 +60,18 @@ public class CacheManager {
 	public void addToCache(IResource resource, List<ColmenaMarker> markerList)
 			throws CoreException, JavaModelException {
 		// Check if is a java nature project (.java)
-		if (resource.getProject().isNatureEnabled(
-				"org.eclipse.jdt.core.javanature")) {
+		if (resource.getProject().isNatureEnabled("org.eclipse.jdt.core.javanature")) {
 			// creates the resource about the file
 			IJavaElement javaElement = JavaCore.create(resource);
 			// creates a colmena tree about this compilation unit. Is like a
 			// start an AST parser
-			ColmenaTree tree = new ColmenaTree(((ICompilationUnit) javaElement));
-			// add to chache this new tree with all the errors (not processed
-			// yet).
+			ColmenaTree tree = new ColmenaTree((ICompilationUnit) javaElement);
+			
+			// add to cache this new tree with all the errors (not processed yet).
 			cache.addToCache(tree, markerList);
 		}
 	}
-
+	
 	/**
 	 * Prints the cache
 	 */

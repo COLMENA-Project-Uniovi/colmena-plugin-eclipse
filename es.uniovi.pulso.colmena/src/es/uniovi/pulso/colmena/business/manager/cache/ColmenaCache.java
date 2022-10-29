@@ -96,17 +96,11 @@ public class ColmenaCache {
 	private void compareTrees(ColmenaTree cacheTree, ColmenaTree currentTree) {
 		// Extract the nodes of the tree wich contain errors
 		List<ColmenaNode> cacheNodesWithErrros = cacheTree.getPartsWithErrors();
-		List<ColmenaNode> currentNodesWithErrors = currentTree
-				.getPartsWithErrors();
+		List<ColmenaNode> currentNodesWithErrors = currentTree.getPartsWithErrors();
 
-		// System.out.println("\t\t nodos que estaban guardados en la cache que tenian errores");
-		// System.out.println("\t\t" + cacheNodesWithErrros);
-		//
-		// System.out.println("\t\t nodos actuales que tienen errores");
-		// System.out.println("\t\t" + currentNodesWithErrors);
-
-		// Seach the common parts beetween the list of errors
+		// Search the common parts between the list of errors
 		searchCommonParts(cacheNodesWithErrros, currentNodesWithErrors);
+		
 		// Remove of the cache the cached tree, allowing save the new tree
 		removeFromCache(cacheTree);
 
@@ -121,59 +115,35 @@ public class ColmenaCache {
 	 * @param currentNodesWithErrors
 	 *            new nodes with errors
 	 */
-	private void searchCommonParts(List<ColmenaNode> cacheNodesWithErrros,
-			List<ColmenaNode> currentNodesWithErrors) {
-
-		// System.out.println("\t\tBuscamos los nodos que haya en común entre los dos arboles");
+	private void searchCommonParts(List<ColmenaNode> cacheNodesWithErrros, List<ColmenaNode> currentNodesWithErrors) {
 		// prepares a buffer based on cached nodes
 		List<ColmenaNode> bufferList = new LinkedList<ColmenaNode>(
 				cacheNodesWithErrros);
 
 		// for each node in the current nodes package
 		for (ColmenaNode cn : currentNodesWithErrors) {
-			// System.out.println("\t\t\t Nodo actual : " + cn.getName());
 			// boolean flag
-			boolean encontrado = false;
+			boolean finded = false;
 			// search this node in the "cached" list
 			for (ColmenaNode ccn : bufferList) {
-				// System.out.println("\t\t\t Comparamos con el nodo cacheado : "
-				// + ccn.getName());
 				// compare, if are equals
 				if (cn.equals(ccn)) {
-					// System.out.println("\t\t\t Son el mismo nodo, toca comparar los errores que tienen");
 					// flag
-					encontrado = true;
+					finded = true;
 					// cause they're equals, we have found the same node, so we
 					// have to check if the errors in the node are the same
 					this.finalErrorList.addAll(compareErrors(cn, ccn));
-					// delete the node found because it is not necesary (avoid
-					// extra comparison)
-					// System.out.println("\t\t\t Borramos de la cache ANTIGUA el nodo "
-					// + ccn.getName());
+					// delete the node found because it is not necessary (avoid extra comparison)
 					bufferList.remove(ccn);
 					// stop the search process
 					break;
 				}
 			}
-			// if we have not found a node in the cached list equal than the new
-			// one
-			if (!encontrado) {
-				// System.out.println("\t\t\t Es un nodo nuevo, por tanto lo insertamos entero");
-				// add to the final list all erros in this current node error
-				// list
+			// if we have not found a node in the cached list equal than the new one
+			if (!finded) {
+				// add to the final list all erros in this current node error list
 				this.finalErrorList.addAll(cn.getErrorList());
 			}
-
-			// Now, we have to delete this node of the buffer, avoiding extra
-			// comparisons and maximizing eficiency
-			/*
-			 * ESTE CODIGO AQUI ES INNECESARIO PORQUE SI NO ENCONTRO EL CN EN LA
-			 * BUFFER LIST LO VA A VOLVER A BUSCAR ESO SOLO DEBARIA HACERSE SI
-			 * EL CN SE ENCONTRO EN LA LISTA BUFFER for (int i = 0; i <
-			 * bufferList.size(); i++) { ColmenaNode cacheAux =
-			 * bufferList.get(i); if (cacheAux.equals(cn)) {
-			 * bufferList.remove(cacheAux); break; } }
-			 */
 		}
 	}
 
@@ -191,8 +161,7 @@ public class ColmenaCache {
 		List<ColmenaMarker> currentErrors = cn.getErrorList();
 		List<ColmenaMarker> cacheErrors = ccn.getErrorList();
 		// a buffer error list based on current errors
-		List<ColmenaMarker> newErrors = new LinkedList<ColmenaMarker>(
-				currentErrors);
+		List<ColmenaMarker> newErrors = new LinkedList<ColmenaMarker>(currentErrors);
 
 		// for the current errors
 		for (int i = 0; i < currentErrors.size(); i++) {
@@ -224,10 +193,11 @@ public class ColmenaCache {
 	 * @return the tree or null if there isn't a tree with this filename
 	 */
 	private ColmenaTree searchTree(String nameOfFile) {
-		// seacht in all of trees
+		// search in all of trees
 		for (ColmenaTree ct : treeList)
 			if (ct.getGlobalFile().getName().equals(nameOfFile))
 				return ct;
+		
 		return null;
 	}
 
@@ -240,49 +210,26 @@ public class ColmenaCache {
 	 *            the current tree that represents the file where we have the
 	 *            errors
 	 */
-	private void synchronizeErrorsWithTree(List<ColmenaMarker> errorList,
-			ColmenaTree tree) {
-
-		// System.out.println("estoy sincronizando errores con el arbol");
-		// System.out.println("\t\tLos errores son " + errorList);
-		// System.out.println("\t\tEl arbol es " + tree.toString());
-
-		// System.out.println("Vamos a bucar los marcadores dentro del arbol");
+	private void synchronizeErrorsWithTree(List<ColmenaMarker> errorList, ColmenaTree tree) {
 
 		// search for each marker
 		for (ColmenaMarker cm : errorList) {
 			// boolean flag
 			boolean added = false;
-			// System.out.println("Estoy con un marcador");
-			// System.out.println(cm.getMessage());
+			
 			// obtain the line of error
 			int lineOfError = Integer.parseInt(cm.getLineNumber());
 
 			// check where is it placed, vars, method or the whole file
-			if (lineOfError >= tree.getStartLineOfVars()
-					&& lineOfError <= tree.getEndLineOfVars()) {
-				// System.out.println("El error '" + cm.getMessage() +
-				// "'de la linea " + cm.getLineNumber() + " esta entre " +
-				// tree.getStartLineOfVars() + " y " + tree.getEndLineOfVars() +
-				// " de las variables");
+			if (lineOfError >= tree.getStartLineOfVars() && lineOfError <= tree.getEndLineOfVars()) {
 				added = searchErrorInVars(cm, tree);
 			}
 
-			if (!added && lineOfError >= tree.getStartLineOfMethods()
-					&& lineOfError <= tree.getEndLineOfMethods()) {
-				// System.out.println("El error '" + cm.getMessage() +
-				// "'de la linea " + cm.getLineNumber() + " esta entre " +
-				// tree.getStartLineOfMethods() + " y " +
-				// tree.getEndLineOfMethods() + " de los metodos");
-
+			if (!added && lineOfError >= tree.getStartLineOfMethods() && lineOfError <= tree.getEndLineOfMethods()) {
 				added = searchErrorInMethods(cm, tree);
 			}
 
 			if (!added) {
-				// System.out.println("El error '" + cm.getMessage() +
-				// "'de la linea " + cm.getLineNumber()
-				// +" se a�adio al fichero completo");
-
 				addErrorInWholeFile(cm, tree);
 			}
 
@@ -312,21 +259,17 @@ public class ColmenaCache {
 	 * @return if the error was linked or not
 	 */
 	private boolean searchErrorInVars(ColmenaMarker cm, ColmenaTree tree) {
-		// System.out.println("\tVoy a a�adir el error " + cm.getMessage() +
-		// "  a las variables");
 		// extract the line number
 		int lineNumber = Integer.parseInt(cm.getLineNumber());
-		// System.out.println("\tSu linea es " + lineNumber);
+
 		// for each var node
 		for (ColmenaVar cv : tree.getVars()) {
-			// System.out.println("\tVaribale a comparar :" + cv.getName() +
-			// " ( " + cv.getStartLine() + " - " + cv.getEndLine() + " )");
+
 			// if the line number of error was located in this node
-			if (lineNumber >= cv.getStartLine()
-					&& lineNumber <= cv.getEndLine()) {
+			if (lineNumber >= cv.getStartLine() && lineNumber <= cv.getEndLine()) {
 				// add to this node the error
-				// System.out.println("\tCumple los prerrequisitos, error asignado");
 				cv.addError(cm);
+				
 				return true;
 			}
 		}
@@ -343,20 +286,14 @@ public class ColmenaCache {
 	 * @return if the marker was located or not
 	 */
 	private boolean searchErrorInMethods(ColmenaMarker cm, ColmenaTree tree) {
-		// System.out.println("\tVoy a a�adir el error " + cm.getMessage() +
-		// "  a los métodos");
 		// extract the line number
 		int lineNumber = Integer.parseInt(cm.getLineNumber());
-		// System.out.println("\tSu linea es " + lineNumber);
 		// for each method node
 		for (ColmenaMethod cme : tree.getMethods()) {
-			// System.out.println("\tVaribale a comparar :" + cme.getName() +
-			// " ( " + cme.getStartLine() + " - " + cme.getEndLine() + " )");
+			
 			// check if the line number of marker is inside the node
-			if (lineNumber >= cme.getStartLine()
-					&& lineNumber <= cme.getEndLine()) {
+			if (lineNumber >= cme.getStartLine() && lineNumber <= cme.getEndLine()) {
 				// add the error with this node
-				// System.out.println("\tCumple los prerrequisitos, error asignado");
 				cme.addError(cm);
 				return true;
 			}
